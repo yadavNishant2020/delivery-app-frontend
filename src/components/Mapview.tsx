@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Platform, PermissionsAndroid } from 'react-native';
+import { StyleSheet, View, Text, Platform, PermissionsAndroid, Switch,ActivityIndicator } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
-import ToggleLocationButton from './ToggleLocationButton';
 
 // Request location permission for Android
 const requestLocationPermission = async () => {
@@ -30,17 +29,18 @@ const requestLocationPermission = async () => {
 };
 
 const CustomMapView = () => {
-  const [location, setLocation] = useState({
-    latitude: 37.78825, // Default San Francisco coordinates
-    longitude: -122.4324,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
-
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
+    latitudeDelta: number;
+    longitudeDelta: number;
+  } | null>(null);
+  const[isLoading, setIsLoading] =useState(false);
   const [isTracking, setIsTracking] = useState(false);
-  const [showLocation, setShowLocation] = useState(true);
   const [mapError, setMapError] = useState<Error | null>(null);
   const [geoError, setGeoError] = useState<string | null>(null);
+
+
 
   useEffect(() => {
     // Request location permission when the component mounts
@@ -49,8 +49,10 @@ const CustomMapView = () => {
     let watchId: number | undefined;
 
     if (isTracking) {
+      setIsLoading(true)
       watchId = Geolocation.watchPosition(
         (position) => {
+          
           console.log('Position received:', position);
           setLocation({
             latitude: position.coords.latitude,
@@ -58,6 +60,7 @@ const CustomMapView = () => {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           });
+          setIsLoading(false)
         },
         (error) => {
           console.error('Geolocation error:', error);
@@ -80,13 +83,8 @@ const CustomMapView = () => {
 
   const handleToggleTracking = () => {
     setIsTracking(prev => !prev);
-    if (showLocation) {
-      setShowLocation(false);
-    }
-  };
-
-  const handleToggleVisibility = () => {
-    setShowLocation(prev => !prev);
+    setGeoError(null); // Reset geo error when toggling tracking
+   
   };
 
   return (
@@ -95,24 +93,38 @@ const CustomMapView = () => {
       {geoError && <Text style={styles.errorText}>Geolocation Error: {geoError}</Text>}
       <MapView
         style={styles.map}
-        region={{
+        region={location? {
           latitude: location.latitude,
           longitude: location.longitude,
           latitudeDelta: location.latitudeDelta,
           longitudeDelta: location.longitudeDelta,
-        }}
+        } : undefined}
       >
-        {showLocation && <Marker coordinate={location} title="Current Location" />}
+      
+        {isTracking && location && (
+          <Marker
+            coordinate={location}
+            title="Current Location"
+          />
+        )}
+
       </MapView>
-      <ToggleLocationButton isTracking={isTracking} onToggle={handleToggleTracking} />
-      <TouchableOpacity
-        style={styles.visibilityButton}
-        onPress={handleToggleVisibility}
-      >
-        <Text style={styles.visibilityText}>
-          {showLocation ? 'Hide Marker' : 'Show Marker'}
+      {isLoading && (
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      )}
+
+      <View style={styles.toggleContainer}>
+        <Text style={styles.toggleLabel}>
+          {isTracking ? 'Live Location' : 'Tracking off'}
         </Text>
-      </TouchableOpacity>
+        <Switch
+          value={isTracking}
+          onValueChange={handleToggleTracking}
+       
+        />
+      </View>
     </View>
   );
 };
@@ -126,21 +138,32 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+  loaderContainer: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+  },
   errorText: {
     color: 'red',
     margin: 10,
   },
-  visibilityButton: {
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: '#28a745',
+  toggleContainer: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    flexDirection: 'row',
     alignItems: 'center',
-    margin: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    padding: 10,
+    borderRadius: 20,
+    elevation: 5,
   },
-  visibilityText: {
-    color: '#fff',
+  toggleLabel: {
     fontSize: 16,
+    marginRight: 10,
   },
+  
 });
 
 export default CustomMapView;
