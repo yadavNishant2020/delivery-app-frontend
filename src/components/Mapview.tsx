@@ -41,18 +41,38 @@ const CustomMapView = () => {
   const [geoError, setGeoError] = useState<string | null>(null);
 
 
+  let watchId: number | undefined;
 
   useEffect(() => {
     // Request location permission when the component mounts
     requestLocationPermission();
+  }, []);
 
-    let watchId: number | undefined;
-
+  useEffect(() => {
+    setIsLoading(true);
+    Geolocation.getCurrentPosition(
+      (position) => {
+        console.log('Position received:', position);
+        setLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        });
+        setIsLoading(false);
+      },
+      (error) => {
+        console.error('Geolocation error:', error);
+        setGeoError(error.message);
+        setIsLoading(false);
+      },
+      { enableHighAccuracy: true }
+    );
+    
     if (isTracking) {
-      setIsLoading(true)
+    
       watchId = Geolocation.watchPosition(
         (position) => {
-          
           console.log('Position received:', position);
           setLocation({
             latitude: position.coords.latitude,
@@ -60,7 +80,6 @@ const CustomMapView = () => {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           });
-          setIsLoading(false)
         },
         (error) => {
           console.error('Geolocation error:', error);
@@ -72,12 +91,14 @@ const CustomMapView = () => {
       if (watchId !== undefined) {
         Geolocation.clearWatch(watchId);
       }
+      setIsLoading(false);
     }
 
     return () => {
       if (watchId !== undefined) {
         Geolocation.clearWatch(watchId);
       }
+      setIsLoading(false);
     };
   }, [isTracking]);
 
@@ -162,6 +183,7 @@ const styles = StyleSheet.create({
   toggleLabel: {
     fontSize: 16,
     marginRight: 10,
+    color: 'black'
   },
   
 });
