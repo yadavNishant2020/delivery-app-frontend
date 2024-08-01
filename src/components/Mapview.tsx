@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, Platform, PermissionsAndroid, Switch,ActivityIndicator } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker ,Circle } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import { StyleSheet, View, Text, Platform, PermissionsAndroid, Switch, ActivityIndicator } from 'react-native';
 
 // Request location permission for Android
 const requestLocationPermission = async () => {
@@ -35,11 +35,15 @@ const CustomMapView = () => {
     latitudeDelta: number;
     longitudeDelta: number;
   } | null>(null);
-  const[isLoading, setIsLoading] =useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isTracking, setIsTracking] = useState(false);
   const [mapError, setMapError] = useState<Error | null>(null);
   const [geoError, setGeoError] = useState<string | null>(null);
 
+  const locations = [
+    { latitude: 28.4487, longitude: 77.0728, title: 'Sector 53, Gurgaon' },
+    { latitude: 28.4611, longitude: 77.0800, title: 'Sector 55, Gurgaon' },
+  ];
 
   let watchId: number | undefined;
 
@@ -68,9 +72,9 @@ const CustomMapView = () => {
       },
       { enableHighAccuracy: true }
     );
-    
+
     if (isTracking) {
-    
+
       watchId = Geolocation.watchPosition(
         (position) => {
           console.log('Position received:', position);
@@ -105,7 +109,6 @@ const CustomMapView = () => {
   const handleToggleTracking = () => {
     setIsTracking(prev => !prev);
     setGeoError(null); // Reset geo error when toggling tracking
-   
   };
 
   return (
@@ -114,14 +117,14 @@ const CustomMapView = () => {
       {geoError && <Text style={styles.errorText}>Geolocation Error: {geoError}</Text>}
       <MapView
         style={styles.map}
-        region={location? {
+        region={location ? {
           latitude: location.latitude,
           longitude: location.longitude,
           latitudeDelta: location.latitudeDelta,
           longitudeDelta: location.longitudeDelta,
         } : undefined}
       >
-      
+
         {isTracking && location && (
           <Marker
             coordinate={location}
@@ -129,7 +132,15 @@ const CustomMapView = () => {
           />
         )}
 
+        {locations.map((loc, index) => (
+          <Circle   key={index}
+          center={{ latitude: loc.latitude, longitude: loc.longitude }}
+          radius={500}
+          strokeColor="rgba(0,0,255,0.5)"
+          fillColor="rgba(0,0,255,0.2)" />
+        ))}
       </MapView>
+      
       {isLoading && (
         <View style={styles.loaderContainer}>
           <ActivityIndicator size="large" color="#0000ff" />
@@ -143,7 +154,7 @@ const CustomMapView = () => {
         <Switch
           value={isTracking}
           onValueChange={handleToggleTracking}
-       
+
         />
       </View>
     </View>
@@ -185,7 +196,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     color: 'black'
   },
-  
+
 });
 
 export default CustomMapView;
