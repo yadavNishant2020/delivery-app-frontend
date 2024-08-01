@@ -104,7 +104,7 @@ const Introview = () => {
             <TouchableOpacity
                 activeOpacity={0.7}
                 style={styles.signinbtn}
-                onPress={() => navigation.navigate('Map')}
+                onPress={() => navigation.navigate('Map' as never)}
             >
                 <Text style={styles.signinText}>Go Online</Text>
             </TouchableOpacity>

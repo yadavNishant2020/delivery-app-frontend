@@ -21,7 +21,7 @@ const LogIn = () => {
 
   const handleSignIn = async () => {
     try {
-      const response = await fetch('http://192.168.1.2:5000/api/auth/signin', {
+      const response = await fetch('http://192.168.1.5:5000/api/auth/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ const LogIn = () => {
       if (response.ok) {
         Alert.alert('Sign in successful');
         dispatch(login());
-        navigation.navigate('Home' as never);
+        navigation.navigate('Intro' as never);
       } else {
         Alert.alert(data.error);
       }
@@ -81,7 +81,7 @@ const LogIn = () => {
     }
 
     try {
-      const response = await fetch('http://192.168.1.2:5000/api/auth/signup', {
+      const response = await fetch('http://192.168.1.5:5000/api/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
