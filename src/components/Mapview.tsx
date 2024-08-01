@@ -41,8 +41,8 @@ const CustomMapView = () => {
   const [geoError, setGeoError] = useState<string | null>(null);
 
   const locations = [
-    { latitude: 28.4487, longitude: 77.0728, title: 'Sector 53, Gurgaon' },
-    { latitude: 28.4611, longitude: 77.0100, title: 'Sector 55, Gurgaon' },
+    { latitude: 25.4484, longitude: 78.5885, title: 'Sector 53, Gurgaon' },
+    { latitude: 25.4484, longitude: 78.5364, title: 'Sector 55, Gurgaon' },
   ];
 
   let watchId: number | undefined;
@@ -141,9 +141,9 @@ const CustomMapView = () => {
           <Circle
             key={index}
             center={{ latitude: loc.latitude, longitude: loc.longitude }}
-            radius={12000}
-            strokeColor="rgba(0,0,255,0.5)"
-            fillColor="rgba(0,0,255,0.2)"
+            radius={1200}
+            strokeColor="#f05e2b"
+            fillColor="rgba(255, 130, 37, 0.5)"
           />
         ))}
       </MapView>

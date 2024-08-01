@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import CustomMapView from '../../components/Mapview'; 
 
-const Home = () => {
+const Map = () => {
   return (
     <View style={styles.container}>
       <CustomMapView />
@@ -18,4 +18,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default Map;
