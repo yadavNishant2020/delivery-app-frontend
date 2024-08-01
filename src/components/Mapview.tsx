@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import MapView, { Marker ,Circle } from 'react-native-maps';
+import React, { useEffect, useState, useCallback } from 'react';
+import MapView, { Marker, Circle } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import { StyleSheet, View, Text, Platform, PermissionsAndroid, Switch, ActivityIndicator } from 'react-native';
 
@@ -42,13 +42,29 @@ const CustomMapView = () => {
 
   const locations = [
     { latitude: 28.4487, longitude: 77.0728, title: 'Sector 53, Gurgaon' },
-    { latitude: 28.4611, longitude: 77.0800, title: 'Sector 55, Gurgaon' },
+    { latitude: 28.4611, longitude: 77.0100, title: 'Sector 55, Gurgaon' },
   ];
 
   let watchId: number | undefined;
 
+  const handlePositionUpdate = useCallback((position: { coords: { latitude: number; longitude: number; }; }) => {
+    setLocation(prevLocation => {
+      // Only update the location if it has changed significantly
+      if (!prevLocation ||
+        Math.abs(prevLocation.latitude - position.coords.latitude) > 0.001 ||
+        Math.abs(prevLocation.longitude - position.coords.longitude) > 0.001) {
+        return {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        };
+      }
+      return prevLocation;
+    });
+  }, []);
+
   useEffect(() => {
-    // Request location permission when the component mounts
     requestLocationPermission();
   }, []);
 
@@ -74,41 +90,31 @@ const CustomMapView = () => {
     );
 
     if (isTracking) {
-
       watchId = Geolocation.watchPosition(
-        (position) => {
-          console.log('Position received:', position);
-          setLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          });
-        },
+        handlePositionUpdate,
         (error) => {
           console.error('Geolocation error:', error);
           setGeoError(error.message);
         },
-        { enableHighAccuracy: true, distanceFilter: 10, interval: 5000 }
+        { enableHighAccuracy: true, distanceFilter: 10, interval: 15000 }
       );
     } else {
       if (watchId !== undefined) {
         Geolocation.clearWatch(watchId);
+        watchId = undefined;
       }
-      setIsLoading(false);
     }
 
     return () => {
       if (watchId !== undefined) {
         Geolocation.clearWatch(watchId);
       }
-      setIsLoading(false);
     };
-  }, [isTracking]);
+  }, [isTracking, handlePositionUpdate]);
 
   const handleToggleTracking = () => {
     setIsTracking(prev => !prev);
-    setGeoError(null); // Reset geo error when toggling tracking
+    setGeoError(null);
   };
 
   return (
@@ -117,14 +123,13 @@ const CustomMapView = () => {
       {geoError && <Text style={styles.errorText}>Geolocation Error: {geoError}</Text>}
       <MapView
         style={styles.map}
-        region={location ? {
+        region={location && !isTracking ? {
           latitude: location.latitude,
           longitude: location.longitude,
           latitudeDelta: location.latitudeDelta,
           longitudeDelta: location.longitudeDelta,
         } : undefined}
       >
-
         {isTracking && location && (
           <Marker
             coordinate={location}
@@ -133,14 +138,16 @@ const CustomMapView = () => {
         )}
 
         {locations.map((loc, index) => (
-          <Circle   key={index}
-          center={{ latitude: loc.latitude, longitude: loc.longitude }}
-          radius={500}
-          strokeColor="rgba(0,0,255,0.5)"
-          fillColor="rgba(0,0,255,0.2)" />
+          <Circle
+            key={index}
+            center={{ latitude: loc.latitude, longitude: loc.longitude }}
+            radius={12000}
+            strokeColor="rgba(0,0,255,0.5)"
+            fillColor="rgba(0,0,255,0.2)"
+          />
         ))}
       </MapView>
-      
+
       {isLoading && (
         <View style={styles.loaderContainer}>
           <ActivityIndicator size="large" color="#0000ff" />
@@ -154,7 +161,6 @@ const CustomMapView = () => {
         <Switch
           value={isTracking}
           onValueChange={handleToggleTracking}
-
         />
       </View>
     </View>
@@ -196,7 +202,6 @@ const styles = StyleSheet.create({
     marginRight: 10,
     color: 'black'
   },
-
 });
 
 export default CustomMapView;
