@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import CustomMapView from '../../components/Mapview'; 
+import CustomMapView from '../../components/mapview/Mapview'; 
 
 const Map = () => {
   return (

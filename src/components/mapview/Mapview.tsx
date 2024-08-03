@@ -1,32 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import MapView, { Marker, Circle } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
-import { StyleSheet, View, Text, Platform, PermissionsAndroid, Switch, ActivityIndicator } from 'react-native';
-
-// Request location permission for Android
-const requestLocationPermission = async () => {
-  if (Platform.OS === 'android') {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Location Permission',
-          message: 'App needs access to your location.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the location');
-      } else {
-        console.log('Location permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  }
-};
+import {requestLocationPermission} from "../../permissions/permissions";
+import { StyleSheet, View, Text, Switch, ActivityIndicator } from 'react-native';
 
 const CustomMapView = () => {
   const [location, setLocation] = useState<{
@@ -41,8 +17,8 @@ const CustomMapView = () => {
   const [geoError, setGeoError] = useState<string | null>(null);
 
   const locations = [
-    { latitude: 25.4484, longitude: 78.5885, title: 'Sector 53, Gurgaon' },
-    { latitude: 25.4484, longitude: 78.5364, title: 'Sector 55, Gurgaon' },
+    { latitude: 28.4483, longitude:77.0653, title: 'Sector 53, Gurgaon' },
+    { latitude: 28.4611, longitude: 77.0800, title: 'Sector 55, Gurgaon' },
   ];
 
   let watchId: number | undefined;
@@ -141,7 +117,7 @@ const CustomMapView = () => {
           <Circle
             key={index}
             center={{ latitude: loc.latitude, longitude: loc.longitude }}
-            radius={1200}
+            radius={5000}
             strokeColor="#f05e2b"
             fillColor="rgba(255, 130, 37, 0.5)"
           />

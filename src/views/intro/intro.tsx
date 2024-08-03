@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Introview from '../../components/Introview';
+import Introview from '../../components/introview/Introview';
 
 const Intro = () => {
   return (
