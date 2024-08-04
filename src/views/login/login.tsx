@@ -1,23 +1,27 @@
 // LogIn.js
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import { View, Text, Image, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
+
 import { useStyle } from './style';
 import { useTheme } from '../../theme';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
 import { login } from '../../store/slice';
+import Button from '../../components/reusableComponents/Button';
 
 const LogIn = () => {
-  const navigation = useNavigation();
   const theme = useTheme();
   const styles = useStyle(theme);
-  const [isSignUp, setIsSignUp] = useState(false);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isSignUp, setIsSignUp] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
-  const dispatch = useDispatch();
+
 
   const handleSignIn = async () => {
     try {
@@ -202,6 +206,7 @@ const LogIn = () => {
               {isSignUp ? 'Sign In' : 'Sign Up'}
             </Text>
           </TouchableOpacity>
+          {/* <Button title= {isSignUp ? 'Sign In' : 'Sign Up'} activeOpacity={0.7} onPress={() => setIsSignUp(!isSignUp)}  /> */}
         </View>
         <Text style={styles.help}>Need Help?</Text>
       </View>
