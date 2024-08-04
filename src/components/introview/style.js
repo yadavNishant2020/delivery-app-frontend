@@ -27,31 +27,25 @@ export const useStyle = theme =>
         fontWeight: 'bold',
     },
     header: {
-        paddingTop: 20,
-        paddingBottom: 20,
+        paddingVertical: scale(20),
         borderBottomWidth: 1,
         borderBottomColor: '#eee',
     },
-    signinText: {
-        fontSize: FontSize.H3,
-        color: 'white',
-        fontFamily: 'NunitoSans_7pt_Condensed-ExtraLight',
-
-    },
-    signinbtn: {
-        marginVertical: scaleVertical(10),
-        borderRadius: 50,
-        textAlign: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-        backgroundColor: colors.primary,
-        padding: scale(15),
-    },
     profilePic: {
-        marginBottom: 10,
+        // paddingHorizontal: scale(15),
+        // marginVertical: scaleVertical(10),
+        // marginBottom: 10,
     },
+    // content: {
+    //     // paddingHorizontal: scale(20),
+    //     // paddingVertical: scale(20),
+    //     padding: 20,
+    //     marginTop: 20,
+    //     borderRadius: 5,
+    //     backgroundColor: '#fff',
+    // },
     image: {
+
         width: 50,
         height: 50,
         borderRadius: 50,

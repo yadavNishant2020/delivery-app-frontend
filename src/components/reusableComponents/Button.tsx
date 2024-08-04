@@ -11,11 +11,12 @@ interface ButtonProps {
     style?: ViewStyle;
     textStyle?: TextStyle;
     iconStyle?: ImageStyle;
+    activeOpacity?: number; 
 }
 
-const Button: React.FC<ButtonProps> = ({ title, onPress, icon, style, textStyle, iconStyle }) => {
+const Button: React.FC<ButtonProps> = ({ title, onPress, icon, style, textStyle, iconStyle, activeOpacity }) => {
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.buttonContainer, style]}>
+        <TouchableOpacity  activeOpacity={activeOpacity} onPress={onPress} style={[styles.buttonContainer, style]}>
             {icon && <Image source={icon} style={[styles.iconContainer, iconStyle]} />}
             <Text style={[styles.buttonText, textStyle]}>{title}</Text>
         </TouchableOpacity>
@@ -30,9 +31,10 @@ const styles = StyleSheet.create({
         backgroundColor: colors.primary,
         padding: scale(15),
         marginVertical: scaleVertical(10),
-        borderRadius: 10,
+        borderRadius: 50,
         textAlign: 'center',
         width: '100%',
+       
     },
 
     iconContainer: {
@@ -42,7 +44,8 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: FontSize.H3,
-        color: colors.primary,
+        color: "white",
+        fontFamily: 'NunitoSans_7pt_Condensed-ExtraLight',
     },
 });
 
