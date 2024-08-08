@@ -1,8 +1,13 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import Introview from '../../components/introview/Introview';
 
+import { useTheme } from '../../theme';
+import { useStyle } from './style';
+
 const Account = () => {
+  const theme = useTheme();
+  const styles = useStyle(theme);
   return (
     <View style={styles.container}>
       <Introview />
@@ -10,11 +15,6 @@ const Account = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-   margin: 17,
-  },
-});
+
 
 export default Account;

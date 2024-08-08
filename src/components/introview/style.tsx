@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import colors from '../../shared/colors';
-import { FontSize, scale, scaleVertical } from '../../theme/scale';
+import { FontSize, scale, scaleHorizontal, scaleVertical } from '../../theme/scale';
 import { themeProps } from '../../theme';
 
 export const useStyle = (theme: themeProps) =>
@@ -15,8 +15,8 @@ export const useStyle = (theme: themeProps) =>
             top: 80, // Adjust the position of the dropdown
             left: -5, // Adjust the position of the dropdown
             backgroundColor: '#fff',
-            padding: 10,
-            borderRadius: 5,
+            padding: scale(10),
+            borderRadius: scale(5),
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.8,
@@ -36,12 +36,12 @@ export const useStyle = (theme: themeProps) =>
             paddingHorizontal: scale(20),
             paddingVertical: scale(20),
             marginTop: scaleVertical(20),
-            borderRadius: 5,
+            borderRadius: scale(5),
             backgroundColor: '#fff',
         },
         image: {
-            width: 50,
-            height: 50,
+            width: scaleHorizontal(50),
+            height: scaleVertical(50),
             borderRadius: 50,
         },
         buttonRow: {

@@ -19,6 +19,9 @@ export const currentDevice = {
   export const scaleVertical = (size: number) =>
     (height / guidelineBaseHeight) * size;
   
+  export const scaleHorizontal = (size: number) =>
+    (width / guidelineBaseHeight) * size;
+  
   export const FontSize = {
     H1: scale(50),
     H2: scale(22),

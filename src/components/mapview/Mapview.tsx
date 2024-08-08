@@ -3,8 +3,12 @@ import MapView, { Marker, Circle } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import {requestLocationPermission} from "../../permissions/permissions";
 import { StyleSheet, View, Text, Switch, ActivityIndicator } from 'react-native';
+import { useTheme } from '../../theme';
+import { useStyle } from './style';
 
 const CustomMapView = () => {
+  const theme = useTheme();
+    const styles = useStyle(theme);
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -143,41 +147,5 @@ const CustomMapView = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  loaderContainer: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-  },
-  errorText: {
-    color: 'red',
-    margin: 10,
-  },
-  toggleContainer: {
-    position: 'absolute',
-    top: 50,
-    right: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    padding: 10,
-    borderRadius: 20,
-    elevation: 5,
-  },
-  toggleLabel: {
-    fontSize: 16,
-    marginRight: 10,
-    color: 'black'
-  },
-});
 
 export default CustomMapView;

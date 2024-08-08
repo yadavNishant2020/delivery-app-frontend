@@ -1,15 +1,16 @@
 import {StyleSheet} from 'react-native';
-import {FontSize, scale, scaleVertical} from '../../theme/scale';
+
 import colors from '../../shared/colors';
+import {FontSize, scale, scaleVertical} from '../../theme/scale';
 
 export const useStyle = theme =>
   StyleSheet.create({
     container: {
       paddingTop: scaleVertical(15),
       marginTop: scaleVertical(-15),
-      backgroundColor: 'white',
-      borderTopRightRadius: 20,
-      borderTopLeftRadius: 20,
+      backgroundColor: colors.white,
+      borderTopRightRadius: scale(20),
+      borderTopLeftRadius: scale(20),
       alignItems: 'center', // Center align content horizontally
       paddingHorizontal: scale(20), // Adjust as needed
     },
@@ -36,10 +37,10 @@ export const useStyle = theme =>
     input: {
       width: '100%',
       height: scaleVertical(45),
-      borderColor: 'gray',
+      borderColor:colors.gray,
       color: 'black',
       borderWidth: 1,
-      borderRadius: 5,
+      borderRadius: scale(5),
       paddingHorizontal: scale(15),
       marginVertical: scaleVertical(10),
       fontFamily: 'NunitoSans-Regular', // Use the Nunito Sans font
@@ -49,7 +50,7 @@ export const useStyle = theme =>
       backgroundColor: colors.primary,
       padding: scale(15),
       marginVertical: scaleVertical(10),
-      borderRadius: 10,
+      borderRadius: scale(10),
       textAlign: 'center',
       alignItems: 'center',
       justifyContent: 'center',
@@ -63,7 +64,7 @@ export const useStyle = theme =>
     },
     signinbtn: {
       marginVertical: scaleVertical(10),
-      borderRadius: 50,
+      borderRadius: scale(50),
       textAlign: 'center',
       alignItems: 'center',
       justifyContent: 'center',
@@ -74,7 +75,7 @@ export const useStyle = theme =>
     signupBtn: {
       marginVertical: scaleVertical(5),
       padding: scale(15),
-      borderRadius: 50,
+      borderRadius: scale(50),
       textAlign: 'center',
       alignItems: 'center',
       justifyContent: 'center',
