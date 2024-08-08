@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import MapView, { Marker, Circle } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import {requestLocationPermission} from "../../permissions/permissions";
-import { StyleSheet, View, Text, Switch, ActivityIndicator } from 'react-native';
+import { View, Text, Switch, ActivityIndicator } from 'react-native';
 import { useTheme } from '../../theme';
 import { useStyle } from './style';
 

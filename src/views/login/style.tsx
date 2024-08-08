@@ -1,9 +1,8 @@
 import {StyleSheet} from 'react-native';
-
 import colors from '../../shared/colors';
 import {FontSize, scale, scaleVertical} from '../../theme/scale';
 
-export const useStyle = theme =>
+export const useStyle = () =>
   StyleSheet.create({
     container: {
       paddingTop: scaleVertical(15),
@@ -11,8 +10,8 @@ export const useStyle = theme =>
       backgroundColor: colors.white,
       borderTopRightRadius: scale(20),
       borderTopLeftRadius: scale(20),
-      alignItems: 'center', // Center align content horizontally
-      paddingHorizontal: scale(20), // Adjust as needed
+      alignItems: 'center', 
+      paddingHorizontal: scale(20), 
     },
     imgContainer: {
       height: scaleVertical(220),
@@ -25,8 +24,7 @@ export const useStyle = theme =>
       textAlign: 'right',
       fontFamily: 'Montserrat-ExtraBold',
       paddingVertical: scale(10),
-      paddingHorizontal: scale(20), // Adjust as needed
-
+      paddingHorizontal: scale(20), 
       fontWeight: '800',
     },
     logoContainer: {
@@ -43,7 +41,7 @@ export const useStyle = theme =>
       borderRadius: scale(5),
       paddingHorizontal: scale(15),
       marginVertical: scaleVertical(10),
-      fontFamily: 'NunitoSans-Regular', // Use the Nunito Sans font
+      fontFamily: 'NunitoSans-Regular', 
       fontSize:scaleVertical(15)
     },
     btn: {
@@ -88,4 +86,5 @@ export const useStyle = theme =>
       fontSize: FontSize.H3,
       color: colors.primary,
     },
-  });
+  }); 
+

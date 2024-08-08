@@ -1,17 +1,12 @@
-// LogIn.js
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, Image, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
-
 import { useStyle } from './style';
-import { useTheme } from '../../theme';
 import { login } from '../../store/slice';
-import Button from '../../components/reusableComponents/Button';
 
 const LogIn = () => {
-  const theme = useTheme();
-  const styles = useStyle(theme);
+  const styles = useStyle();
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -206,7 +201,6 @@ const LogIn = () => {
               {isSignUp ? 'Sign In' : 'Sign Up'}
             </Text>
           </TouchableOpacity>
-          {/* <Button title= {isSignUp ? 'Sign In' : 'Sign Up'} activeOpacity={0.7} onPress={() => setIsSignUp(!isSignUp)}  /> */}
         </View>
         <Text style={styles.help}>Need Help?</Text>
       </View>

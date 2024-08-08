@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text,  TouchableOpacity, Image, Alert } from 'react-native';
-
-import {useStyle} from "./style"
+import { View, Text, TouchableOpacity, Image, Alert } from 'react-native';
+import { useStyle } from "./style"
 import { useTheme } from '../../theme';
 import { logout } from '../../store/slice';
 import Button from '../reusableComponents/Button';
@@ -100,12 +99,8 @@ const Introview = () => {
                         <Text style={styles.statValue}>17</Text>
                     </View>
                 </View>
-
             </View>
-
-          
-            <Button title='Go Online'  activeOpacity={0.7}  onPress={() => navigation.navigate('Map' as never)}/>
-
+            <Button title='Go Online' activeOpacity={0.7} onPress={() => navigation.navigate('Map' as never)} />
         </View>
     );
 };

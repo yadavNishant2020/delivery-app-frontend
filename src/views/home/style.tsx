@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-export const useStyle = theme =>
+export const useStyle = () =>
   StyleSheet.create({  container: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-end',

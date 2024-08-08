@@ -1,9 +1,7 @@
 import { StyleSheet } from 'react-native';
-
 import { themeProps } from '../../theme';
 import colors from '../../shared/colors';
 import { FontSize, scale, scaleVertical } from '../../theme/scale';
-
 
 export const useStyle = (theme: themeProps) =>
     StyleSheet.create({
@@ -16,10 +14,8 @@ export const useStyle = (theme: themeProps) =>
             marginVertical: scaleVertical(10),
             borderRadius: scale(50),
             textAlign: 'center',
-            width: '100%',
-
+            width: '100%'
         },
-
         iconContainer: {
             width: scale(20),
             height: scaleVertical(20),
@@ -30,5 +26,4 @@ export const useStyle = (theme: themeProps) =>
             color: colors.white,
             fontFamily: 'NunitoSans_7pt_Condensed-ExtraLight',
         },
-
     })
