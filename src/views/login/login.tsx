@@ -38,7 +38,7 @@ const LogIn = () => {
       if (response.ok) {
         Alert.alert('Sign in successful');
         dispatch(login());
-        navigation.navigate('Intro' as never);
+        navigation.navigate('Main' as never);
       } else {
         Alert.alert(data.error);
       }

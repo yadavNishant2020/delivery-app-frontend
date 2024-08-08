@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Introview from '../../components/introview/Introview';
 
-const Intro = () => {
+const Account = () => {
   return (
     <View style={styles.container}>
       <Introview />
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Intro;
+export default Account;
