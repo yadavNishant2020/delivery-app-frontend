@@ -26,7 +26,7 @@ export const useStyle = (theme: themeProps) =>
         },
         tabs: {
             flexDirection: 'row',
-            justifyContent: "space-between",
+            justifyContent: "flex-end",
             alignItems: 'center',
             paddingVertical: scale(15),
         },

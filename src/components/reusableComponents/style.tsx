@@ -26,4 +26,36 @@ export const useStyle = (theme: themeProps) =>
             color: colors.white,
             fontFamily: 'NunitoSans_7pt_Condensed-ExtraLight',
         },
+        container: {
+            width: '50%',
+        },
+        dropdownHeader: {
+            padding: scale(10),
+            backgroundColor: colors.white,
+            borderRadius: scale(18),
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center', 
+        },
+        selectedText: {
+            fontSize: FontSize.H5,
+        },
+        image: {
+            width: scale(20),
+            height: scale(20),
+            resizeMode: 'contain',
+        },
+        dropdownList: {
+            backgroundColor: colors.white,
+            borderRadius: scale(5),
+            marginTop: scale(5),
+            maxHeight: scale(150),
+            borderWidth: scale(1),
+            borderColor: '#FF5963',
+        },
+        dropdownItem: {
+            padding: scale(15),
+            borderBottomWidth: scale(1),
+            borderBottomColor: '#FF5963',
+        },
     })

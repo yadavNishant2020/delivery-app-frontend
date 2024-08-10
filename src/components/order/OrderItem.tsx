@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text,  TouchableOpacity, Image } from 'react-native';
 
 import { useStyle } from './style';
 import { Order } from './DataTable';
 import { useTheme } from '../../theme';
 import OrderDetails from './orderdetail/OrderDetails';
 
-const OrderItem: React.FC<Order> = ({ orderNo, status ,statusColor}) => {
+const OrderItem: React.FC<Order> = ({ orderNo, status, statusColor }) => {
   const theme = useTheme();
   const styles = useStyle(theme);
   const [expanded, setExpanded] = useState(false);
@@ -29,21 +29,19 @@ const OrderItem: React.FC<Order> = ({ orderNo, status ,statusColor}) => {
   const backgroundColor = getLighterBackground(statusColor, 0.2);
 
   return (
-    
+
     <TouchableOpacity style={styles.orderItem} onPress={toggleExpanded}>
       <Text style={styles.orderNumber}>Order No.</Text>
       <View style={styles.orderDetails}>
         <Text style={styles.orderNumber}> {orderNo}</Text>
 
-        <Text style={[styles.orderStatus, {backgroundColor: backgroundColor,   color: statusColor || theme.colors.gray }]}>{status}</Text>
+        <Text style={[styles.orderStatus, { backgroundColor: backgroundColor, color: statusColor || theme.colors.gray }]}>{status}</Text>
       </View>
-      {expanded && (
-        <View >
-        <OrderDetails/>
-          
-        </View>
 
+      {expanded && (
+        <OrderDetails />
       )}
+
       <View style={styles.expandedIcon}>
         <Image source={require('../../public/arrowIcon.png')} />
       </View>
