@@ -47,7 +47,7 @@ const CustomDropdown: React.FC<DropdownProps> = ({ data, onSelect, placeholder =
                                 style={styles.dropdownItem}
                                 onPress={() => handleSelect(item)}
                             >
-                                <Text>{item}</Text>
+                                <Text style={styles.dropdownText}>{item}</Text>
                             </TouchableOpacity>
                         )}
                     />

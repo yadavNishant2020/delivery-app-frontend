@@ -3,7 +3,7 @@ import {
     View,
     Text,
     Image,
-   } from 'react-native';
+} from 'react-native';
 
 import { useStyle } from './style';
 import { useTheme } from '../../../theme';
@@ -14,7 +14,7 @@ const OrderDetails = () => {
     const theme = useTheme();
     const styles = useStyle(theme);
     const navigation = useNavigation();
-   
+
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
     const handleSelect = (item: string) => {
@@ -98,7 +98,6 @@ const OrderDetails = () => {
                                 style={styles.image}
                             />
                         </View>
-
                     </View>
                     <View style={styles.orderImage}>
 
@@ -125,7 +124,6 @@ const OrderDetails = () => {
                         style={styles.image}
                     />
                 </View>
-
             </View>
 
             <View style={styles.rsInfo}>
@@ -162,14 +160,11 @@ const OrderDetails = () => {
                     <CustomDropdown data={['Option 1', 'Option 2', 'Option 3']}
                         onSelect={handleSelect}
                         placeholder="Select an Item" />
-                  
-          
                 </View>
-
-              
             </View>
-            <Button title='Confirm Pickup' activeOpacity={0.7} 
-                onPress={() => navigation.navigate('Map' as never)}/>
+
+            <Button title='Confirm Pickup' activeOpacity={0.7}
+                onPress={() => navigation.navigate('Map' as never)} />
         </View>
 
     );

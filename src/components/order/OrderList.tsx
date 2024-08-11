@@ -7,6 +7,7 @@ import { useTheme } from '../../theme';
 import { orderData, Order } from './DataTable';
 import OrderItem from './OrderItem';
 import CustomDropdown from '../reusableComponents/DropdownBox';
+import OrderDeliver from './orderdetail/OrderDeliver';
 
 
 const OrdersList: React.FC = () => {

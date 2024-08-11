@@ -39,6 +39,7 @@ export const useStyle = (theme: themeProps) =>
         },
         selectedText: {
             fontSize: FontSize.H5,
+            color: colors.black
         },
         image: {
             width: scale(20),
@@ -51,11 +52,16 @@ export const useStyle = (theme: themeProps) =>
             marginTop: scale(5),
             maxHeight: scale(150),
             borderWidth: scale(1),
+            color: colors.black,
             borderColor: '#FF5963',
         },
         dropdownItem: {
             padding: scale(15),
+            color: colors.black,
             borderBottomWidth: scale(1),
             borderBottomColor: '#FF5963',
         },
+        dropdownText:{
+            color: colors.black,
+        }
     })
