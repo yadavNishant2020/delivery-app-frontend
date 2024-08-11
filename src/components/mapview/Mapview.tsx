@@ -1,27 +1,34 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import MapView, { Marker, Circle } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
-import {requestLocationPermission} from "../../permissions/permissions";
-import { View, Text, Switch, ActivityIndicator } from 'react-native';
+import { requestLocationPermission } from "../../permissions/permissions";
+import { View, Text, Switch, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
 import { useTheme } from '../../theme';
 import { useStyle } from './style';
+import OrderDeliver from './OrderDeliver';
 
-const CustomMapView = () => {
+const CustomMapView = ({ route }: any) => {
+
+  // const { pickupLocation, dropLocation } = route.params || {}
+  // console.log("rout map", pickupLocation)
   const theme = useTheme();
-    const styles = useStyle(theme);
+  const styles = useStyle(theme);
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
     latitudeDelta: number;
     longitudeDelta: number;
   } | null>(null);
+  const pickupLocation = { latitude: 28.4483, longitude: 77.0653, title: 'Sector 53, Gurgaon' }
+  const dropLocation = { latitude: 28.4611, longitude: 77.0800, title: 'Sector 55, Gurgaon' }
+  const [isSheetVisible, setSheetVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isTracking, setIsTracking] = useState(false);
   const [mapError, setMapError] = useState<Error | null>(null);
   const [geoError, setGeoError] = useState<string | null>(null);
 
   const locations = [
-    { latitude: 28.4483, longitude:77.0653, title: 'Sector 53, Gurgaon' },
+    { latitude: 28.4483, longitude: 77.0653, title: 'Sector 53, Gurgaon' },
     { latitude: 28.4611, longitude: 77.0800, title: 'Sector 55, Gurgaon' },
   ];
 
@@ -97,6 +104,11 @@ const CustomMapView = () => {
     setGeoError(null);
   };
 
+
+  const toggleSheet = () => {
+    setSheetVisible(!isSheetVisible);
+  };
+
   return (
     <View style={styles.container}>
       {mapError && <Text style={styles.errorText}>Map Error: {mapError.message}</Text>}
@@ -143,6 +155,17 @@ const CustomMapView = () => {
           onValueChange={handleToggleTracking}
         />
       </View>
+      {isSheetVisible && (
+        <View style={styles.bottomSheet}>
+          <Text style={styles.sheetContent}>
+            <OrderDeliver pickupLocation={pickupLocation} dropLocation={dropLocation} />
+          </Text>
+        </View>
+      )}
+
+      <TouchableOpacity style={styles.toggleButton} onPress={toggleSheet}>
+        <Image source={require('../../public/Draghandle.png')} />
+      </TouchableOpacity>
     </View>
   );
 };

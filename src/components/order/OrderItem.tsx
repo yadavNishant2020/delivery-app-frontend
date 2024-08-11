@@ -4,12 +4,14 @@ import { View, Text,  TouchableOpacity, Image } from 'react-native';
 import { useStyle } from './style';
 import { Order } from './DataTable';
 import { useTheme } from '../../theme';
-import OrderDetails from './orderdetail/OrderDetails';
+import OrderDetails from '../mapview/OrderDetails';
+import { useNavigation } from '@react-navigation/native';
 
 const OrderItem: React.FC<Order> = ({ orderNo, status, statusColor }) => {
   const theme = useTheme();
   const styles = useStyle(theme);
   const [expanded, setExpanded] = useState(false);
+  const navigation = useNavigation();
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -39,7 +41,7 @@ const OrderItem: React.FC<Order> = ({ orderNo, status, statusColor }) => {
       </View>
 
       {expanded && (
-        <OrderDetails />
+        <OrderDetails navigation={navigation}/>
       )}
 
       <View style={styles.expandedIcon}>

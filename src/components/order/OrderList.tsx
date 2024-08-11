@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { DataTable, Text } from 'react-native-paper';
-import { View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { Text } from 'react-native-paper';
+import { View, Image, ScrollView } from 'react-native';
 
 import { useStyle } from './style';
 import { useTheme } from '../../theme';
 import { orderData, Order } from './DataTable';
 import OrderItem from './OrderItem';
 import CustomDropdown from '../reusableComponents/DropdownBox';
-import OrderDeliver from './orderdetail/OrderDeliver';
-
 
 const OrdersList: React.FC = () => {
     const theme = useTheme();
     const styles = useStyle(theme);
-    const [selected, setSelected] = useState<'Meal' | 'Store'>('Meal');
     const [orders, setOrders] = useState<Order[] | null>(null);
     const [currentDate, setCurrentDate] = useState<string>('');
 

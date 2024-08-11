@@ -166,6 +166,7 @@ export const useStyle = (theme: themeProps) =>
       fontSize: FontSize.H6,
       color: colors.black,
     },
+  
   });
 
  
