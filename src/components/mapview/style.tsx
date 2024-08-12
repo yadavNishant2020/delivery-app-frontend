@@ -83,6 +83,8 @@ export const useStyle = (theme: themeProps) =>
     },
     contactImage: {
       marginLeft: scale(30),
+      height: scale(10),
+      width: scale(10),
     },
     userInfo: {
       flexDirection: 'row',

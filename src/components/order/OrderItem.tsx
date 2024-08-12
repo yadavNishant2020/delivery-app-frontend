@@ -6,6 +6,7 @@ import { Order } from './DataTable';
 import { useTheme } from '../../theme';
 import OrderDetails from '../mapview/OrderDetails';
 import { useNavigation } from '@react-navigation/native';
+import { scale } from '../../theme/scale';
 
 const OrderItem: React.FC<Order> = ({ orderNo, status, statusColor }) => {
   const theme = useTheme();
@@ -45,7 +46,7 @@ const OrderItem: React.FC<Order> = ({ orderNo, status, statusColor }) => {
       )}
 
       <View style={styles.expandedIcon}>
-        <Image source={require('../../public/arrowIcon.png')} />
+        <Image source={require('../../public/arrowIcon.jpg')} style={{width: scale(14), height: scale(8)}} />
       </View>
 
 

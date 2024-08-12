@@ -10,6 +10,7 @@ import { useStyle } from './style';
 import { useTheme } from '../../theme';
 import Button from '../reusableComponents/Button';
 import { useNavigation } from '@react-navigation/native';
+import { scale } from '../../theme/scale';
 
 interface OrderDeliverProps {
     pickupLocation: {
@@ -34,16 +35,16 @@ const OrderDeliver: React.FC<OrderDeliverProps> = ({ pickupLocation, dropLocatio
             <View style={styles.expandedContent}>
                 <View style={styles.header}>
                     <View style={styles.userInfo}>
-                        <Image source={require('../../public/contact.png')} />
+                        <Image source={require('../../public/contact.jpg')} style={{width: scale(14), height: scale(8)}} />
                         <Text style={styles.userName}>Aman Sharma</Text>
                     </View>
-                    <Image style={styles.contactImage} source={require('../../public/phone.png')} />
+                    <Image style={styles.contactImage} source={require('../../public/phone.jpg')} />
                 </View>
 
                 <View
                     style={styles.orderInfo}>
                     <Image
-                        source={require('../../public/location.png')}
+                        source={require('../../public/location.jpg')}
                         style={[styles.image]}
                     />
                     <View style={styles.orderText}>
@@ -57,7 +58,7 @@ const OrderDeliver: React.FC<OrderDeliverProps> = ({ pickupLocation, dropLocatio
                 </View>
 
                 <Button title='Start' style={styles.button} activeOpacity={0.7}
-                    icon={require('../../public/telegram.png')}
+                    icon={require('../../public/telegram.jpg')}
                     onPress={() => navigation.navigate('Map' as never)} />
             </View>
         </ScrollView>

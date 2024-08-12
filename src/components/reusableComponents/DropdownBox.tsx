@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from 'react
 
 import { useTheme } from '../../theme';
 import { useStyle } from './style';
+import { ScrollView } from 'react-native-gesture-handler';
+import { scale } from '../../theme/scale';
 
 interface DropdownProps {
     data: Array<string>;
@@ -32,26 +34,28 @@ const CustomDropdown: React.FC<DropdownProps> = ({ data, onSelect, placeholder =
                     {selectedItem ? selectedItem : placeholder}
                 </Text>
                 <Image
-                    source={isOpen ? require('../../public/arrowIcon.png') : require('../../public/arrowIcon.png')}
+                    source={isOpen ? require('../../public/arrowIcon.jpg') : require('../../public/arrowIcon.jpg')}
                     style={styles.image}
                 />
             </TouchableOpacity>
 
             {isOpen && (
-                <View style={styles.dropdownList}>
-                    <FlatList
-                        data={data}
-                        keyExtractor={(item) => item}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity
-                                style={styles.dropdownItem}
-                                onPress={() => handleSelect(item)}
-                            >
-                                <Text style={styles.dropdownText}>{item}</Text>
-                            </TouchableOpacity>
-                        )}
-                    />
-                </View>
+                <ScrollView horizontal={true} >
+                    <View style={styles.dropdownList}>
+                        <FlatList
+                            data={data}
+                            keyExtractor={(item) => item}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity
+                                    style={styles.dropdownItem}
+                                    onPress={() => handleSelect(item)}
+                                >
+                                    <Text style={styles.dropdownText}>{item}</Text>
+                                </TouchableOpacity>
+                            )}
+                        />
+                    </View>
+                </ScrollView>
             )}
         </View>
     );

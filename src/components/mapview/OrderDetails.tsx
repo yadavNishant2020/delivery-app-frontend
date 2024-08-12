@@ -10,6 +10,7 @@ import { useStyle } from '../order/orderdetail/style';
 import { useTheme } from '../../theme';
 import CustomDropdown from '../reusableComponents/DropdownBox';
 import Button from '../reusableComponents/Button';
+import { scale } from '../../theme/scale';
 
 type Props = {
     navigation: any;
@@ -77,11 +78,11 @@ const OrderDetails = ({ navigation }: Props) => {
             <View style={styles.dashedLine} />
             <View style={styles.header}>
                 <View style={styles.userInfo}>
-                    <Image source={require('../../public/contact.png')} />
+                    <Image source={require('../../public/contact.jpg')} style={{width: scale(30), height: scale(25)}} />
                     <Text style={styles.userName}>Aman Sharma</Text>
 
                 </View>
-                <Image style={styles.contactImage} source={require('../../public/phone.png')} />
+                <Image style={styles.contactImage} source={require('../../public/phone.jpg')} />
             </View>
 
             {pickupCenters.map((pickup, id) => (
@@ -89,8 +90,8 @@ const OrderDetails = ({ navigation }: Props) => {
                     <View
                         style={styles.orderInfo}>
                         <Image
-                            source={require('../../public/hand.png')}
-                            style={[styles.image]}
+                            source={require('../../public/hand.jpg')}
+                            style={[styles.HandImage]}
                         />
                         <View style={styles.orderText}>
                             <Text style={styles.pickupText}>{pickup.name}</Text>
@@ -98,7 +99,7 @@ const OrderDetails = ({ navigation }: Props) => {
                                 {pickup.address}
                             </Text>
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                                <Image source={require('../../public/productImage.png')} style={styles.image} />
+                                <Image source={require('../../public/productImage.png')}  />
                                 <View>
                                     <Text style={styles.productInfo}>
                                         {pickup.items.name}
@@ -116,11 +117,13 @@ const OrderDetails = ({ navigation }: Props) => {
 
                         </View>
                         <View style={styles.orderImage}>
-                            <Image source={require('../../public/phone.png')} style={styles.image} />
+                            <Image source={require('../../public/phone.jpg')} style={styles.image} />
                             <TouchableOpacity
                                 onPress={() => {
                                     const selectedPickupCenter = pickupCenters.find((center) => center.id === selectedOption);
                                     if (selectedPickupCenter) {
+                                        console.log(selectedPickupCenter.pickupLocation.latitude, selectedPickupCenter.pickupLocation.longitude);
+                                        
                                         navigation.navigate('Map', {
                                             pickupLocation: selectedPickupCenter.pickupLocation,
                                             dropLocation: selectedPickupCenter.dropLocation,
@@ -129,7 +132,7 @@ const OrderDetails = ({ navigation }: Props) => {
                                 }}
                             >
                                 <Image
-                                    source={require('../../public/telegram.png')}
+                                    source={require('../../public/telegram.jpg')}
                                     style={styles.image} />
                             </TouchableOpacity>
 
@@ -144,7 +147,7 @@ const OrderDetails = ({ navigation }: Props) => {
             <View
                 style={styles.orderInfo}>
                 <Image
-                    source={require('../../public/location.png')}
+                    source={require('../../public/location.jpg')}
                     style={[styles.image]}
                 />
                 <View style={styles.orderText}>
@@ -156,7 +159,7 @@ const OrderDetails = ({ navigation }: Props) => {
                 </View>
                 <View style={styles.productImage}>
                     <Image
-                        source={require('../../public/telegram.png')}
+                        source={require('../../public/telegram.jpg')}
                         style={styles.image}
                     />
                 </View>
@@ -165,13 +168,12 @@ const OrderDetails = ({ navigation }: Props) => {
             <View style={styles.rsInfo}>
                 <Image
                     source={require('../../public/money.png')}
-                    style={styles.image}
                 />
                 <Text style={styles.rsText}>₹ 23000</Text>
                 <Text style={styles.paidText}>
                     <Image
                         source={require('../../public/greencheck.png')}
-                        style={styles.image}
+                        style={{width: scale(20), height: scale(20)}}
                     /> Paid</Text>
             </View>
 
@@ -185,7 +187,7 @@ const OrderDetails = ({ navigation }: Props) => {
                     <View style={styles.timeIcon}>
                         <Image
                             source={require('../../public/greencheck.png')}
-                            style={styles.image}
+                            style={{width: scale(20), height: scale(20)}}
                         />
                     </View>
                     <Text style={styles.timeLeftText}>TIME LEFT</Text>
@@ -200,19 +202,26 @@ const OrderDetails = ({ navigation }: Props) => {
             </View>
 
             <Button
-                title='Confirm Pickup'
-                activeOpacity={0.7}
-                onPress={() => {
-                    console.log('annu')
-                    const selectedPickupCenter = pickupCenters.find((center) => center.id === selectedOption);
-                    if (selectedPickupCenter) {
-                        navigation.navigate('Map', {
+            title='Confirm Pickup'
+            activeOpacity={0.7}
+            onPress={() => {
+                console.log('annu');
+                const selectedPickupCenter = pickupCenters.find((center) => center.id === selectedOption);
+                if (selectedPickupCenter) {
+                console.log("selectedPickupCenter.pickupLocation", selectedPickupCenter.pickupLocation);
+                console.log("selectedPickupCenter.dropLocation", selectedPickupCenter.dropLocation);
+                
+                    navigation.navigate('Main', {
+                        screen: 'Map',
+                        params: {
                             pickupLocation: selectedPickupCenter.pickupLocation,
                             dropLocation: selectedPickupCenter.dropLocation,
-                        });
-                    }
-                }}
-            />
+                        }
+                    });
+                }
+            }}
+/>
+
         </View>
 
     );

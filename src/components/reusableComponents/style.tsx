@@ -46,6 +46,11 @@ export const useStyle = (theme: themeProps) =>
             height: scale(20),
             resizeMode: 'contain',
         },
+        arrowImage: {
+            width: scale(20),
+            height: scale(20),
+            resizeMode: 'contain',
+        },
         dropdownList: {
             backgroundColor: colors.white,
             borderRadius: scale(5),
@@ -54,6 +59,10 @@ export const useStyle = (theme: themeProps) =>
             borderWidth: scale(1),
             color: colors.black,
             borderColor: '#FF5963',
+            width: scale(160),
+            padding: scale(5),
+            display: 'flex',
+            alignItems: 'center',
         },
         dropdownItem: {
             padding: scale(15),

@@ -14,6 +14,8 @@ export const useStyle = (theme: themeProps) =>
     },
     contactImage: {
       marginLeft: scale(30),
+      height: scale(30),
+      width: scale(30),
     },
     userInfo: {
       flexDirection: 'row',
@@ -63,8 +65,17 @@ export const useStyle = (theme: themeProps) =>
     },
     image: {
       marginRight: scale(16),
-      marginTop: scale(8)
+      marginTop: scale(8),
+      height: scale(30),
+      width: scale(30),
     },
+    HandImage: {
+      marginRight: scale(16),
+      marginTop: scale(8),
+      height: scale(20),
+      width: scale(30),
+    },
+
  
     pickupText: {
       fontSize: FontSize.H5,
@@ -87,8 +98,9 @@ export const useStyle = (theme: themeProps) =>
     },
     rsInfo:{
       flexDirection: 'row',
-       alignItems: 'center',
-        marginVertical:  scaleVertical(10)
+      alignItems: 'center',
+      marginVertical:  scaleVertical(10),
+      gap: scale(10),
     },
     rsText:{
       fontSize: FontSize.H5,

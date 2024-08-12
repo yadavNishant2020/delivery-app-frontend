@@ -1,42 +1,40 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import MapView, { Marker, Circle } from 'react-native-maps';
+import MapView, { Marker, Circle, Polyline } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import { requestLocationPermission } from "../../permissions/permissions";
+import { fetchRoute } from '../../api/RouteApi';
 import { View, Text, Switch, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
 import { useTheme } from '../../theme';
 import { useStyle } from './style';
-import OrderDeliver from './OrderDeliver';
+import dropoffImage from '../../public/homeIcon.png'; 
 
 const CustomMapView = ({ route }: any) => {
-
-  // const { pickupLocation, dropLocation } = route.params || {}
-  // console.log("rout map", pickupLocation)
   const theme = useTheme();
   const styles = useStyle(theme);
+  const { pickupLocation = { latitude: 25.3920, longitude: 78.3556 }, dropLocation = { latitude: 25.3720, longitude: 78.5556 } } = route?.params || {};
+
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
     latitudeDelta: number;
     longitudeDelta: number;
   } | null>(null);
-  const pickupLocation = { latitude: 28.4483, longitude: 77.0653, title: 'Sector 53, Gurgaon' }
-  const dropLocation = { latitude: 28.4611, longitude: 77.0800, title: 'Sector 55, Gurgaon' }
   const [isSheetVisible, setSheetVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isTracking, setIsTracking] = useState(false);
   const [mapError, setMapError] = useState<Error | null>(null);
   const [geoError, setGeoError] = useState<string | null>(null);
+  const [routeCoordinates, setRouteCoordinates] = useState<{ latitude: number; longitude: number; }[]>([]);
 
   const locations = [
-    { latitude: 28.4483, longitude: 77.0653, title: 'Sector 53, Gurgaon' },
-    { latitude: 28.4611, longitude: 77.0800, title: 'Sector 55, Gurgaon' },
+    { latitude: 25.3120, longitude: 78.3556, title: 'Sector 53, Gurgaon' },
+    { latitude: 25.3120, longitude: 78.5556, title: 'Sector 55, Gurgaon' },
   ];
 
   let watchId: number | undefined;
 
   const handlePositionUpdate = useCallback((position: { coords: { latitude: number; longitude: number; }; }) => {
     setLocation(prevLocation => {
-      // Only update the location if it has changed significantly
       if (!prevLocation ||
         Math.abs(prevLocation.latitude - position.coords.latitude) > 0.001 ||
         Math.abs(prevLocation.longitude - position.coords.longitude) > 0.001) {
@@ -99,11 +97,24 @@ const CustomMapView = ({ route }: any) => {
     };
   }, [isTracking, handlePositionUpdate]);
 
+  useEffect(() => {
+    const getRoute = async () => {
+      try {
+        const route = await fetchRoute(pickupLocation, dropLocation);
+        setRouteCoordinates(route);
+      } catch (error) {
+        console.error('Error getting route:', error);
+        setMapError(error as Error);
+      }
+    };
+
+    getRoute();
+  }, [pickupLocation, dropLocation]);
+
   const handleToggleTracking = () => {
     setIsTracking(prev => !prev);
     setGeoError(null);
   };
-
 
   const toggleSheet = () => {
     setSheetVisible(!isSheetVisible);
@@ -138,6 +149,34 @@ const CustomMapView = ({ route }: any) => {
             fillColor="rgba(255, 130, 37, 0.5)"
           />
         ))}
+
+        {pickupLocation && (
+          <Marker
+            coordinate={pickupLocation}
+            title="Pickup Location"
+            pinColor="#f05e2b"
+            //make the size smaller of the pin
+
+          />
+        )}
+
+        {dropLocation && (
+          <Marker
+            coordinate={dropLocation}
+            title="Drop-off Location"
+            pinColor="red"
+            icon={dropoffImage}
+            style={{ width: 30, height: 30 }}
+          />
+        )}
+
+        {routeCoordinates.length > 0 && (
+          <Polyline
+            coordinates={routeCoordinates}
+            strokeColor="#FF0000"
+            strokeWidth={1.5}
+          />
+        )}
       </MapView>
 
       {isLoading && (
@@ -158,7 +197,7 @@ const CustomMapView = ({ route }: any) => {
       {isSheetVisible && (
         <View style={styles.bottomSheet}>
           <Text style={styles.sheetContent}>
-            <OrderDeliver pickupLocation={pickupLocation} dropLocation={dropLocation} />
+            {/* <OrderDeliver pickupLocation={pickupLocation} dropLocation={dropLocation} /> */}
           </Text>
         </View>
       )}
@@ -169,6 +208,5 @@ const CustomMapView = ({ route }: any) => {
     </View>
   );
 };
-
 
 export default CustomMapView;
