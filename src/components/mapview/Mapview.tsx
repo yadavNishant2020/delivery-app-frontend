@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import MapView, { Marker, Circle, Polyline } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import { requestLocationPermission } from "../../permissions/permissions";
@@ -26,10 +26,10 @@ const CustomMapView = ({ route }: any) => {
   const [geoError, setGeoError] = useState<string | null>(null);
   const [routeCoordinates, setRouteCoordinates] = useState<{ latitude: number; longitude: number; }[]>([]);
 
-  const locations = [
+  const locations = useMemo(() => [
     { latitude: 25.3120, longitude: 78.3556, title: 'Sector 53, Gurgaon' },
     { latitude: 25.3120, longitude: 78.5556, title: 'Sector 55, Gurgaon' },
-  ];
+  ], []);
 
   let watchId: number | undefined;
 
@@ -81,7 +81,7 @@ const CustomMapView = ({ route }: any) => {
           console.error('Geolocation error:', error);
           setGeoError(error.message);
         },
-        { enableHighAccuracy: true, distanceFilter: 10, interval: 15000 }
+        { enableHighAccuracy: true, distanceFilter: 50, interval: 60000 }
       );
     } else {
       if (watchId !== undefined) {
@@ -100,15 +100,20 @@ const CustomMapView = ({ route }: any) => {
   useEffect(() => {
     const getRoute = async () => {
       try {
+        setIsLoading(true);
         const route = await fetchRoute(pickupLocation, dropLocation);
         setRouteCoordinates(route);
       } catch (error) {
         console.error('Error getting route:', error);
         setMapError(error as Error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    getRoute();
+    if (pickupLocation && dropLocation) {
+      getRoute();
+    }
   }, [pickupLocation, dropLocation]);
 
   const handleToggleTracking = () => {
@@ -120,18 +125,36 @@ const CustomMapView = ({ route }: any) => {
     setSheetVisible(!isSheetVisible);
   };
 
+  const mapRegion = useMemo(() => {
+    if (location && !isTracking) {
+      return {
+        latitude: location.latitude,
+        longitude: location.longitude,
+        latitudeDelta: location.latitudeDelta,
+        longitudeDelta: location.longitudeDelta,
+      };
+    }
+    return undefined;
+  }, [location, isTracking]);
+
+  const markers = useMemo(() => locations.map((loc, index) => (
+    <Circle
+      key={index}
+      center={{ latitude: loc.latitude, longitude: loc.longitude }}
+      radius={5000}
+      strokeColor="#f05e2b"
+      fillColor="rgba(255, 130, 37, 0.5)"
+    />
+  )), [locations]);
+
   return (
     <View style={styles.container}>
       {mapError && <Text style={styles.errorText}>Map Error: {mapError.message}</Text>}
       {geoError && <Text style={styles.errorText}>Geolocation Error: {geoError}</Text>}
       <MapView
         style={styles.map}
-        region={location && !isTracking ? {
-          latitude: location.latitude,
-          longitude: location.longitude,
-          latitudeDelta: location.latitudeDelta,
-          longitudeDelta: location.longitudeDelta,
-        } : undefined}
+        region={mapRegion}
+        onRegionChangeComplete={() => {}}
       >
         {isTracking && location && (
           <Marker
@@ -140,23 +163,13 @@ const CustomMapView = ({ route }: any) => {
           />
         )}
 
-        {locations.map((loc, index) => (
-          <Circle
-            key={index}
-            center={{ latitude: loc.latitude, longitude: loc.longitude }}
-            radius={5000}
-            strokeColor="#f05e2b"
-            fillColor="rgba(255, 130, 37, 0.5)"
-          />
-        ))}
+        {markers}
 
         {pickupLocation && (
           <Marker
             coordinate={pickupLocation}
             title="Pickup Location"
             pinColor="#f05e2b"
-            //make the size smaller of the pin
-
           />
         )}
 
