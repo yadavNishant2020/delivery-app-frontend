@@ -7,12 +7,11 @@ import { View, Text, Switch, ActivityIndicator, TouchableOpacity, Image } from '
 import { useTheme } from '../../theme';
 import { useStyle } from './style';
 import dropoffImage from '../../public/homeIcon.png'; 
-
+import { debounce } from 'lodash'; 
 const CustomMapView = ({ route }: any) => {
   const theme = useTheme();
   const styles = useStyle(theme);
   const { pickupLocation = { latitude: 25.3920, longitude: 78.3556 }, dropLocation = { latitude: 25.3720, longitude: 78.5556 } } = route?.params || {};
-
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -25,6 +24,7 @@ const CustomMapView = ({ route }: any) => {
   const [mapError, setMapError] = useState<Error | null>(null);
   const [geoError, setGeoError] = useState<string | null>(null);
   const [routeCoordinates, setRouteCoordinates] = useState<{ latitude: number; longitude: number; }[]>([]);
+  const [routeCache, setRouteCache] = useState<{[key: string]: any}>({});
 
   const locations = [
     { latitude: 25.3120, longitude: 78.3556, title: 'Sector 53, Gurgaon' },
@@ -32,6 +32,26 @@ const CustomMapView = ({ route }: any) => {
   ];
 
   let watchId: number | undefined;
+
+  const debouncedFetchRoute = useCallback(
+    debounce(async (pickup:any, drop:any) => {
+      const cacheKey = `${pickup.latitude},${pickup.longitude}-${drop.latitude},${drop.longitude}`;
+      if (routeCache[cacheKey]) {
+        setRouteCoordinates(routeCache[cacheKey]);
+        return;
+      }
+      
+      try {
+        const route = await fetchRoute(pickup, drop);
+        setRouteCoordinates(route);
+        setRouteCache(prev => ({ ...prev, [cacheKey]: route }));
+      } catch (error) {
+        console.error('Error getting route:', error);
+        setMapError(error as Error);
+      }
+    }, 1000),
+    [routeCache]
+  );
 
   const handlePositionUpdate = useCallback((position: { coords: { latitude: number; longitude: number; }; }) => {
     setLocation(prevLocation => {
@@ -98,18 +118,10 @@ const CustomMapView = ({ route }: any) => {
   }, [isTracking, handlePositionUpdate]);
 
   useEffect(() => {
-    const getRoute = async () => {
-      try {
-        const route = await fetchRoute(pickupLocation, dropLocation);
-        setRouteCoordinates(route);
-      } catch (error) {
-        console.error('Error getting route:', error);
-        setMapError(error as Error);
-      }
-    };
-
-    getRoute();
-  }, [pickupLocation, dropLocation]);
+    if (pickupLocation && dropLocation) {
+      debouncedFetchRoute(pickupLocation, dropLocation);
+    }
+  }, [pickupLocation, dropLocation, debouncedFetchRoute]);
 
   const handleToggleTracking = () => {
     setIsTracking(prev => !prev);
