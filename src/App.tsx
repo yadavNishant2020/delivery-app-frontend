@@ -53,8 +53,8 @@ const App = () => {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Main" component={BottomTabs} options={{ headerShown: false }} />
           <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} />
+          <Stack.Screen name="Main" component={BottomTabs} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

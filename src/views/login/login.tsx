@@ -20,7 +20,7 @@ const LogIn = () => {
 
   const handleSignIn = async () => {
     try {
-      const response = await fetch('http://192.168.1.5:5000/api/auth/signin', {
+      const response = await fetch('http://192.168.1.6:5000/api/auth/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ const LogIn = () => {
     }
 
     try {
-      const response = await fetch('http://192.168.1.5:5000/api/auth/signup', {
+      const response = await fetch('http://192.168.1.6:5000/api/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
